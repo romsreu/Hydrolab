@@ -253,8 +253,9 @@ bool v3_state = 0; // Columna derecha
 
 // --- Caudalímetros ---
 const float VOLUMEN_POR_PULSO = 2.25; // ml/pulso
-float b1_cant = 0, b2_cant = 0, b3_cant = 0, b4_cant = 0; // Cantidad objetivo de riego
-float vol1 = 10.7, vol2 = 10.7, vol3 = 10.7, vol4 = 10.7;             // Volumen medido
+float b1_cant = 0, b2_cant = 0, b3_cant = 0, b4_cant = 0; // Cantidad objetivo de riego, de momento no se calculan, cuando se llaman a las funciones
+                                                          //se le pasan valores fijos 100ml,100ml,10ml,10ml respectivamente
+float vol1 = 10.7, vol2 = 10.7, vol3 = 10.7, vol4 = 10.7;  // Volumen medido
 int pulsos1 = 0, pulsos2 = 0, pulsos3 = 0, pulsos4 = 0;   // Pulsos contados
 
 
@@ -491,90 +492,37 @@ void temp_config(){ //Función para setear los pines como entrada y arrancar los
   DS18B20.begin();
 }
 
+
 //Encender cada una de las bombitas. Se usan los ml como parámetro. La bomba se enciende solo para esos ml.
-void b1_on(float ml1){
-  while(vol1 < ml1){
-    // Calcular el volumen que pasa
-    attachInterrupt(digitalPinToInterrupt(c1), pulsos1++, RISING); //Función para contar los pulsos del caudalímetro. Se le pasa el pin, la variable donde cuenta los pulsos y si suben o bajan
-    vol1 = ((pulsos1 * VOLUMEN_POR_PULSO) / 10.0)-10.7; //Cálculo del volumen
-    // Encender la bomba
-    digitalWrite(b1, HIGH);
-    b1_state = HIGH;
-    // Serial.print(" Vol1: ");
-    // Serial.print(vol1);
-    // Serial.print("b1");
-    // Serial.println(b1_state);
+void bombita_on(uint8_t pinBomba, uint8_t pinCaudal, int& pulsos, float& vol, bool& estado, float ml) {
+  
+  while (vol < ml) {
+    attachInterrupt(digitalPinToInterrupt(pinCaudal), pulsos++, RISING); // revisar esto despues
+    vol = ((pulsos * VOLUMEN_POR_PULSO) / 10.0) - 10.7;
+    digitalWrite(pinBomba, HIGH);
+    estado = HIGH;
+    // Serial.print("Pin bomba: ");
+    // Serial.print(pinBomba);
+    // Serial.print(" | Vol actual: ");
+    // Serial.print(vol);
+    // Serial.print(" | Vol objetivo: ");
+    // Serial.print(ml);
+    // Serial.print(" | Pulsos: ");
+    // Serial.println(pulsos);
   }
-  // Si no se cumple la condición, apagar la bomba
-    digitalWrite(b1, LOW);
-    b1_state = LOW;
-    // Detener la medición
-    detachInterrupt(digitalPinToInterrupt(c1));
-    // Resetear los pulsos y el volumen
-    pulsos1 = 0;
-    vol1 = 10.7;
+
+  digitalWrite(pinBomba, LOW);
+  estado = LOW;
+  detachInterrupt(digitalPinToInterrupt(pinCaudal));
+  pulsos = 0;
+  vol = 10.7;
+  // Serial.print("Pin bomba: ");
+  // Serial.print(pinBomba);
+  // Serial.println(" | Bomba apagada, pulsos y volumen reseteados.");
 }
 
-void b2_on(float ml2){
-  while(vol2 < ml2){
-    // Calcular el volumen que pasa
-    attachInterrupt(digitalPinToInterrupt(c2), pulsos2++, RISING); //Función para contar los pulsos del caudalímetro. Se le pasa el pin, la variable donde cuenta los pulsos y si suben o bajan
-    vol2 = ((pulsos2 * VOLUMEN_POR_PULSO) / 10.0)-10.7; //Cálculo del volumen
-    // Encender la bomba
-    digitalWrite(b2, HIGH);
-    b2_state = HIGH;
-    // Serial.print(" Vol2: ");
-    // Serial.print(vol2);
-    // Serial.print("b2");
-    // Serial.println(b2_state);
-  }
-  // Si no se cumple la condición, apagar la bomba
-    digitalWrite(b2, LOW);
-    b2_state = LOW;
-    // Detener la medición
-    detachInterrupt(digitalPinToInterrupt(c2));
-    // Resetear los pulsos y el volumen
-    pulsos2 = 0;
-    vol2 = 10.7;
-}
 
-void b3_on(float ml3){
-  while(vol3 < ml3){
-    // Calcular el volumen que pasa
-    attachInterrupt(digitalPinToInterrupt(c3), pulsos3++, RISING); //Función para contar los pulsos del caudalímetro. Se le pasa el pin, la variable donde cuenta los pulsos y si suben o bajan
-    vol3 = ((pulsos3 * VOLUMEN_POR_PULSO) / 10.0)-10.7; //Cálculo del volumen
-    // Encender la bomba
-    digitalWrite(b3, HIGH);
-    b3_state = HIGH;
-  }
-  // Si no se cumple la condición, apagar la bomba
-    digitalWrite(b3, LOW);
-    b3_state = LOW;
-    // Detener la medición
-    detachInterrupt(digitalPinToInterrupt(c3));
-    // Resetear los pulsos y el volumen
-    pulsos3 = 0;
-    vol3 = 10.7;
-}
 
-void b4_on(float ml4){
-  while(vol4 < ml4){
-    // Calcular el volumen que pasa
-    attachInterrupt(digitalPinToInterrupt(c4), pulsos4++, RISING); //Función para contar los pulsos del caudalímetro. Se le pasa el pin, la variable donde cuenta los pulsos y si suben o bajan
-    vol4 = ((pulsos4 * VOLUMEN_POR_PULSO) / 10.0)-10.7; //Cálculo del volumen
-    // Encender la bomba
-    digitalWrite(b4, HIGH);
-    b4_state = HIGH;
-  }
-  // Si no se cumple la condición, apagar la bomba
-    digitalWrite(b4, LOW);
-    b4_state = LOW;
-    // Detener la medición
-    detachInterrupt(digitalPinToInterrupt(c4));
-    // Resetear los pulsos y el volumen
-    pulsos4 = 0;
-    vol4 = 10.7;
-}
 
 //LED: Función para encender los leds de los estantes. Como parámetro se necesita el tiempo de encendido y el de apagado.
 void LED(unsigned long LED_tOn, unsigned long LED_tOff) {
@@ -796,10 +744,10 @@ void pHcontrol(unsigned long pH_time) {
     if (abs(pH_samples) >= 3) {
       if (pH_samples > 0) {
         // pH is consistently high, adjust accordingly
-        b1_on(100.0);
+        bombita_on(b1, c1, pulsos1, vol1, b1_state, 100.0);
       } else {
         // pH is consistently low, adjust accordingly
-        b2_on(100.0);
+        bombita_on(b2, c2, pulsos2, vol2, b2_state, 100.0);
       }
       // Reset pH sample count
       pH_samples = 0;
@@ -831,10 +779,10 @@ void ECcontrol(unsigned long EC_time) {
     if (abs(EC_samples) >= 3) {
       if (EC_samples > 0) {
         // pH is consistently high, adjust accordingly
-        b3_on(10.0);
+        bombita_on(b3, c3, pulsos3, vol3, b3_state, 10.0);
       } else {
         // pH is consistently low, adjust accordingly
-        b4_on(10.0);
+        bombita_on(b4, c4, pulsos4, vol4, b4_state, 10.0);
       }
       // Reset pH sample count
       EC_samples = 0;

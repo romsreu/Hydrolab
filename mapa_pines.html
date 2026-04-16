@@ -1,0 +1,113 @@
+
+<h2 class="sr-only">Mapa de pines del proyecto hidroponia - Arduino Mega</h2>
+
+<style>
+  .pin-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .pin-table th { font-size: 11px; font-weight: 500; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.05em; padding: 6px 10px; border-bottom: 0.5px solid var(--color-border-tertiary); text-align: left; }
+  .pin-table td { padding: 7px 10px; border-bottom: 0.5px solid var(--color-border-tertiary); color: var(--color-text-primary); vertical-align: middle; }
+  .pin-table tr:last-child td { border-bottom: none; }
+  .pin-table tr:hover td { background: var(--color-background-secondary); }
+  .badge { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 500; }
+  .badge-out { background: #E6F1FB; color: #0C447C; }
+  .badge-in  { background: #EAF3DE; color: #27500A; }
+  .badge-ana { background: #FAEEDA; color: #633806; }
+  .pin-num { font-family: var(--font-mono); font-size: 12px; color: var(--color-text-secondary); background: var(--color-background-secondary); padding: 2px 6px; border-radius: 4px; border: 0.5px solid var(--color-border-tertiary); }
+  .name-code { font-family: var(--font-mono); font-size: 12px; color: var(--color-text-primary); }
+  .card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); overflow: hidden; margin-bottom: 1rem; }
+  .card-title { font-size: 13px; font-weight: 500; color: var(--color-text-secondary); padding: 10px 12px 8px; border-bottom: 0.5px solid var(--color-border-tertiary); }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; padding: 1rem 0; }
+
+  @media (max-width: 600px) {
+    .grid { grid-template-columns: 1fr; }
+    .pin-table th, .pin-table td { padding: 6px 8px; font-size: 12px; }
+    .hide-mobile { display: none; }
+    .badge { font-size: 10px; padding: 2px 6px; }
+    .pin-num { font-size: 11px; }
+    .name-code { font-size: 11px; }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .badge-out { background: #0C447C; color: #B5D4F4; }
+    .badge-in  { background: #27500A; color: #C0DD97; }
+    .badge-ana { background: #633806; color: #FAC775; }
+  }
+</style>
+
+<div class="grid">
+
+  <div>
+    <div class="card">
+      <div class="card-title">Salidas digitales</div>
+      <table class="pin-table">
+        <thead><tr><th>Nombre</th><th>Pin</th><th class="hide-mobile">Descripción</th><th>Tipo</th></tr></thead>
+        <tbody>
+          <tr><td class="name-code">v0</td><td><span class="pin-num">29</span></td><td class="hide-mobile">Ventilador LED</td><td><span class="badge badge-out">salida</span></td></tr>
+          <tr><td class="name-code">v1</td><td><span class="pin-num">23</span></td><td class="hide-mobile">Ventilador lateral izq.</td><td><span class="badge badge-out">salida</span></td></tr>
+          <tr><td class="name-code">v2</td><td><span class="pin-num">25</span></td><td class="hide-mobile">Ventilador lateral cen.</td><td><span class="badge badge-out">salida</span></td></tr>
+          <tr><td class="name-code">v3</td><td><span class="pin-num">27</span></td><td class="hide-mobile">Ventilador lateral der.</td><td><span class="badge badge-out">salida</span></td></tr>
+          <tr><td class="name-code">b0</td><td><span class="pin-num">43</span></td><td class="hide-mobile">Bomba principal</td><td><span class="badge badge-out">salida</span></td></tr>
+          <tr><td class="name-code">b1</td><td><span class="pin-num">31</span></td><td class="hide-mobile">Bombita tanque 1 (pH A)</td><td><span class="badge badge-out">salida</span></td></tr>
+          <tr><td class="name-code">b2</td><td><span class="pin-num">33</span></td><td class="hide-mobile">Bombita tanque 2 (pH B)</td><td><span class="badge badge-out">salida</span></td></tr>
+          <tr><td class="name-code">b3</td><td><span class="pin-num">35</span></td><td class="hide-mobile">Bombita tanque 3 (EC 1)</td><td><span class="badge badge-out">salida</span></td></tr>
+          <tr><td class="name-code">b4</td><td><span class="pin-num">37</span></td><td class="hide-mobile">Bombita tanque 4 (EC 2)</td><td><span class="badge badge-out">salida</span></td></tr>
+          <tr><td class="name-code">LED1</td><td><span class="pin-num">39</span></td><td class="hide-mobile">LED estante arriba</td><td><span class="badge badge-out">salida</span></td></tr>
+          <tr><td class="name-code">LED2</td><td><span class="pin-num">41</span></td><td class="hide-mobile">LED estante abajo</td><td><span class="badge badge-out">salida</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Caudalímetros</div>
+      <table class="pin-table">
+        <thead><tr><th>Nombre</th><th>Pin</th><th class="hide-mobile">Descripción</th><th>Tipo</th></tr></thead>
+        <tbody>
+          <tr><td class="name-code">c1</td><td><span class="pin-num">45</span></td><td class="hide-mobile">Caudalímetro tanque 1</td><td><span class="badge badge-in">entrada</span></td></tr>
+          <tr><td class="name-code">c2</td><td><span class="pin-num">47</span></td><td class="hide-mobile">Caudalímetro tanque 2</td><td><span class="badge badge-in">entrada</span></td></tr>
+          <tr><td class="name-code">c3</td><td><span class="pin-num">49</span></td><td class="hide-mobile">Caudalímetro tanque 3</td><td><span class="badge badge-in">entrada</span></td></tr>
+          <tr><td class="name-code">c4</td><td><span class="pin-num">51</span></td><td class="hide-mobile">Caudalímetro tanque 4</td><td><span class="badge badge-in">entrada</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <div class="card-title">Sensores de temperatura</div>
+      <table class="pin-table">
+        <thead><tr><th>Nombre</th><th>Pin</th><th class="hide-mobile">Descripción</th><th>Tipo</th></tr></thead>
+        <tbody>
+          <tr><td class="name-code">DHTPIN_ext</td><td><span class="pin-num">2</span></td><td class="hide-mobile">DHT22 temp/hum exterior</td><td><span class="badge badge-in">entrada</span></td></tr>
+          <tr><td class="name-code">DHTPIN_int</td><td><span class="pin-num">3</span></td><td class="hide-mobile">DHT22 temp/hum interior</td><td><span class="badge badge-in">entrada</span></td></tr>
+          <tr><td class="name-code">Wtemp_pin</td><td><span class="pin-num">4</span></td><td class="hide-mobile">DS18B20 temp solución (×2)</td><td><span class="badge badge-in">entrada</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Entradas analógicas</div>
+      <table class="pin-table">
+        <thead><tr><th>Nombre</th><th>Pin</th><th class="hide-mobile">Descripción</th><th>Tipo</th></tr></thead>
+        <tbody>
+          <tr><td class="name-code">LDRpin</td><td><span class="pin-num">A0</span></td><td class="hide-mobile">LDR — luz ambiente</td><td><span class="badge badge-ana">analógica</span></td></tr>
+          <tr><td class="name-code">pHPin</td><td><span class="pin-num">A1</span></td><td class="hide-mobile">Sensor pH</td><td><span class="badge badge-ana">analógica</span></td></tr>
+          <tr><td class="name-code">ECPin</td><td><span class="pin-num">A2</span></td><td class="hide-mobile">Sensor EC (conductividad)</td><td><span class="badge badge-ana">analógica</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Lógica de relés — referencia rápida</div>
+      <table class="pin-table">
+        <thead><tr><th>Estado</th><th>digitalWrite</th><th class="hide-mobile">Aplica a</th></tr></thead>
+        <tbody>
+          <tr><td>Encendido</td><td><span class="name-code">LOW</span></td><td class="hide-mobile">b0, LED1, LED2</td></tr>
+          <tr><td>Apagado</td><td><span class="name-code">HIGH</span></td><td class="hide-mobile">b0, LED1, LED2</td></tr>
+          <tr><td>Encendido</td><td><span class="name-code">HIGH</span></td><td class="hide-mobile">v1, v2, v3, b1–b4</td></tr>
+          <tr><td>Apagado</td><td><span class="name-code">LOW</span></td><td class="hide-mobile">v1, v2, v3, b1–b4</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

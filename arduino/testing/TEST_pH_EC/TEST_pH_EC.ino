@@ -5,22 +5,21 @@
 #define pHPin A1
 #define ECPin A2
 
-float offset  = 0.00;
-float VREF    = 5.0;
-float coef    = 1.0;
+float offset = 0.00;
+float VREF = 5.0;
+float coef = 1.0;
 
 void setup() {
   Serial.begin(9600);
   pinMode(pHPin, INPUT);
   pinMode(ECPin, INPUT);
   Serial.println("TEST pH y EC iniciado");
-  Serial.println("Girar potenciometros y verificar que los valores cambien");
 }
 
 void loop() {
   // pH
-  int rawPH      = analogRead(pHPin);
-  float voltPH   = rawPH * (5.0 / 1023.0);
+  int rawPH = analogRead(pHPin);
+  float voltPH = rawPH * (5.0 / 1023.0);
   float pH_value = 3.5 * voltPH + offset;
 
   Serial.print("pH - Raw: ");
@@ -36,8 +35,8 @@ void loop() {
   }
 
   // EC
-  int rawEC      = analogRead(ECPin);
-  float voltEC   = rawEC * VREF / 1024.0;
+  int rawEC = analogRead(ECPin);
+  float voltEC = rawEC * VREF / 1024.0;
   float EC_value = voltEC * coef;
 
   Serial.print("EC - Raw: ");
